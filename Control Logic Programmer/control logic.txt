@@ -1,0 +1,60 @@
+% carry neg zero     step        instruction    count   mode   write   read
+
+% |------ First step ------|
+      x   x    x      001 .xxx.      xx xxxx => 1       0        101    010
+                                                                        
+% |------ Second step ------|                                           
+      x   x    x      010 .xxx.      xx xxxx => 0       0        101    011
+                                                                        
+                                                                        
+% |------ Third step ------|                                            
+                                                                        
+% :--- NO OPERATION                                                     
+      x   x    x      100 .xxx.      00 0000 => 1       0        111    111
+                                                                        
+% :--- HALT                                                             
+      x   x    x      100 .xxx.      00 0001 => 0       0        111    111
+                                                                        
+% :--- LOAD                                                             
+% From RAM To (Reg. A, Reg. B)                                          
+      x   x    x      100 .xxx.      00 0010 => 1       1        100    000
+      x   x    x      100 .xxx.      01 0010 => 1       1        100    001
+% From ROM To (Reg. A, Reg. B)                                          
+      x   x    x      100 .xxx.      10 0010 => 1       1        101    000
+      x   x    x      100 .xxx.      11 0010 => 1       1        101    001
+                                                                        
+% :--- STORE                                                            
+% From (Reg. A, Reg. B) To RAM                                          
+      x   x    x      100 .xxx.      00 0011 => 1       1        000    100
+      x   x    x      100 .xxx.      10 0011 => 1       1        001    100
+% From Reg. A To Reg. B                                                 
+      x   x    x      100 .xxx.      01 0011 => 1       0        000    001
+% From Reg. B To Reg. A                                                 
+      x   x    x      100 .xxx.      11 0011 => 1       0        001    000
+                                                                        
+% :--- SET                                                              
+% Reg. A                                                                
+      x   x    x      100 .xxx.      00 0100 => 1       0        011    000
+% Reg. B                                                                
+      x   x    x      100 .xxx.      10 0100 => 1       0        011    001
+                                                                        
+% :--- ADD & SUB                                                        
+% To Reg. A                                                             
+      x   x    x      100 .xxx.      00 0101 => 1       0        010    000
+% To Reg. B                                                             
+      x   x    x      100 .xxx.      10 0101 => 1       0        010    001
+                                                                        
+% :--- JUMP                                                             
+      x   x    x      100 .xxx.      00 0110 => 0       0        011    101
+                                                                        
+% :--- JUMP CARRY                                                       
+      0   x    x      100 .xxx.      10 0110 => 1       0        111    111
+      1   x    x      100 .xxx.      10 0110 => 0       0        011    101
+                                                                        
+% :--- JUMP NEG                                                         
+      x   0    x      100 .xxx.      01 0110 => 1       0        111    111
+      x   1    x      100 .xxx.      01 0110 => 0       0        011    101
+                                                                        
+% :--- JUMP ZERO                                                        
+      x   x    0      100 .xxx.      11 0110 => 1       0        111    111
+      x   x    1      100 .xxx.      11 0110 => 0       0        011    101

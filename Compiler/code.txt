@@ -1,0 +1,17 @@
+SET rA 0xC0
+SET rB 0x10
+
+LBS Loop1
+ADD rA
+JPN @Loop1
+
+
+LBS Loop2
+SET rA 0xCC
+SET rB 0x33
+SET rA 0x33
+SET rB 0xCC
+JMP @Loop2
+
+
+HLT
